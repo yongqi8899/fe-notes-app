@@ -22,9 +22,8 @@ Used during AI prompting recap for Gen AI integration
 ## Usage
 
 - The application has its entry point at `src/main.jsx`
-- `App.jsx` return a `RouterProvider` with 3 routes:
-  - `/` => `Home`
-  - `/diary` => `Diary`
+- `App.jsx` return a `RouterProvider` with 2 routes:
+  - `/` => `Diary`
   - `/notes` => `SchoolNotes`
 - The code is organised as follows:
   - There's a path resolution alias `@/` => `.src/` to avoid relative paths in imports. This is setup in `vite.config.js` to inform Vite, and `jsconfig.json` to inform the TS compiler in the editor.
@@ -50,7 +49,3 @@ Used during AI prompting recap for Gen AI integration
   - `components`: React components used in pages
   - `layouts`: React components that are used as layouts in routes and render `Outlet`
   - `TailwindCSS` and `DaisyUI` are configured for styles <3
-
-## Tasks
-
-Check the homepage!
