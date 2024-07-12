@@ -34,6 +34,7 @@ const EntryCard = ({ entry }) => {
       const imageUrl = data[0].url;
       setAiImageUrl(imageUrl);
       editImage(imageUrl);
+      toast.success(`AI image is ready`);
     } catch (error) {
       setError(error);
       toast.error(`Failed to fetch AI image`);

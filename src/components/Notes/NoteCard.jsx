@@ -4,13 +4,13 @@ import { toast } from "react-toastify";
 const NoteCard = ({ note }) => {
   const [error, setError] = useState(null);
   const [aiImageUrl, setAiImageUrl] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loadingAiImg, setloadingAiImg] = useState(false);
 
   const src = aiImageUrl ? aiImageUrl : note.image;
   const fetchAIImage = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true);
+      setloadingAiImg(true);
       const response = await fetch(
         "https://gen-ai-wbs-consumer-api.onrender.com/api/v1/images/generations",
         {
@@ -34,13 +34,13 @@ const NoteCard = ({ note }) => {
       const imageUrl = data[0].url;
       setAiImageUrl(imageUrl);
       editImage(imageUrl);
+      toast.success(`AI image is ready`);
     } catch (error) {
       setError(error);
       toast.error(`Failed to fetch AI image`);
       console.log(error);
     } finally {
-      setLoading(false);
-      toast.success(`AI image is ready`);
+      setloadingAiImg(false);
     }
   };
   const editImage = async (src) => {
@@ -61,6 +61,11 @@ const NoteCard = ({ note }) => {
     const data = await response.json();
     console.log("edit", data);
   };
+
+  const fetchAINote = (e) => {
+    e.preventDefault();
+    
+  }
   return (
     <div className="shadow-xl card bg-base-100">
       <figure className="h-48 bg-white">
@@ -75,8 +80,8 @@ const NoteCard = ({ note }) => {
         <p className="truncate text-wrap">{note.content}</p>
       </div>
       <div className="flex justify-between">
-        <button className="text-white bg-purple-500 btn-sm btn hover:bg-purple-400" onClick={fetchAIImage} disabled={loading}>
-        {loading ? "Loading..." : "AI Image"}
+        <button className="text-white bg-purple-500 btn-sm btn hover:bg-purple-400" onClick={fetchAIImage} disabled={loadingAiImg}>
+        {loadingAiImg ? "loading..." : "AI Image"}
         </button>
         <button className="text-white bg-purple-500 btn-sm btn hover:bg-purple-400">
           AI Note
