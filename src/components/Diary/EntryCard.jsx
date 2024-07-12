@@ -5,7 +5,7 @@ const EntryCard = ({ entry }) => {
   const [error, setError] = useState(null);
   const [aiImageUrl, setAiImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  // const src = base64 ? `data:image/png;base64,${base64}` : entry.image;
+  
   const src = aiImageUrl ? aiImageUrl : entry.image;
   const fetchAIImage = async (e) => {
     e.preventDefault();
@@ -31,9 +31,9 @@ const EntryCard = ({ entry }) => {
         }
       );
       const data = await response.json();
-      console.log(data[0]);
-      setAiImageUrl(data[0].url);
-      editImage(data[0].url)
+      const imageUrl = data[0].url;
+      setAiImageUrl(imageUrl);
+      editImage(imageUrl);
     } catch (error) {
       setError(error);
       toast.error(`Failed to fetch AI image`);
@@ -59,7 +59,7 @@ const EntryCard = ({ entry }) => {
     if (!response.ok) setError("Failed to update image");
     const data = await response.json();
     console.log("edit", data);
-  }
+  };
 
   return (
     <div className="shadow-xl card bg-base-100">
