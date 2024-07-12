@@ -34,7 +34,7 @@ const EntryCard = ({ entry }) => {
       setBase64(data[0].b64_json);
     } catch (error) {
       setError(error);
-      toast.error(`Failed to fetch AI image: ${error.message}`);
+      toast.error(`Failed to fetch AI image: ${error}`);
     } finally {
       setLoading(false);
     }
