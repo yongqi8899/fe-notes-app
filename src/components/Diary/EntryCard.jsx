@@ -3,10 +3,10 @@ import { toast } from "react-toastify";
 
 const EntryCard = ({ entry }) => {
   const [error, setError] = useState(null);
-  const [base64, setBase64] = useState("");
+  const [aiImageUrl, setAiImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const src = base64 ? `data:image/png;base64,${base64}` : entry.image;
-
+  // const src = base64 ? `data:image/png;base64,${base64}` : entry.image;
+  const src = aiImageUrl ? aiImageUrl : entry.image;
   const fetchAIImage = async (e) => {
     e.preventDefault();
     try {
@@ -26,19 +26,41 @@ const EntryCard = ({ entry }) => {
             n: 1,
             size: "1024x1024",
             prompt: entry.content,
-            response_format: "b64_json",
+            response_format: "url",
           }),
         }
       );
       const data = await response.json();
-      setBase64(data[0].b64_json);
+      console.log(data[0]);
+      setAiImageUrl(data[0].url);
+      editImage(data[0].url)
     } catch (error) {
       setError(error);
-      toast.error(`Failed to fetch AI image: ${error}`);
+      toast.error(`Failed to fetch AI image`);
+      console.log(error);
     } finally {
       setLoading(false);
     }
   };
+  const editImage = async (src) => {
+    const response = await fetch(
+      `${import.meta.env.VITE_NOTES_API}/entries/${entry._id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...entry,
+          image: src,
+        }),
+      }
+    );
+    if (!response.ok) setError("Failed to update image");
+    const data = await response.json();
+    console.log("edit", data);
+  }
+
   return (
     <div className="shadow-xl card bg-base-100">
       <figure className="h-48 bg-white">
